@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DesktopOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { GroupOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import Title from "antd/es/typography/Title";
@@ -12,9 +12,9 @@ const estilo = {
         margin: "0",
         textAlign: "center",
         fontSize: "48px",
-        height: "64px"
-    }
-}
+        height: "64px",
+    },
+};
 
 function getItem(label, key, icon, children) {
     return {
@@ -26,8 +26,8 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-    getItem((<Link to="/processo">Processos</Link>), "1", <FileOutlined />),
-    getItem("Option 2", "2", <DesktopOutlined />),
+    getItem(<Link to="/processos">Processos</Link>, "1", <FileOutlined />),
+    getItem("Tabelas", "2", <GroupOutlined />),
     getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
     getItem("Team", "sub2", <TeamOutlined />, [getItem("Team 1", "6"), getItem("Team 2", "8")]),
     getItem("Files", "9", <PieChartOutlined />),
@@ -49,7 +49,14 @@ const SiderLayout = () => {
                     </Title>
                 </Link>
             </div>
-            <Menu theme="dark" mode="inline" items={items} selectedKeys={[current]} style={estilo.menu} onClick={onClick} />
+            <Menu
+                theme="dark"
+                mode="inline"
+                items={items}
+                selectedKeys={[current]}
+                style={estilo.menu}
+                onClick={onClick}
+            />
         </Sider>
     );
 };
