@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Select, AutoComplete, Button, Table, Tabs, Row, Typography, Col, Space } from "antd";
+import { Form, Input, Select, AutoComplete, Button, Table, Tabs, Row, Typography, Col, Space, Tag } from "antd";
 
 const { Option } = Select;
 
@@ -8,24 +8,63 @@ const estilo = {
         maxWidth: "none",
         background: "#fafafa",
         borderRadius: "16px 16px 0 0",
-        padding: "24px",
+        padding: "24px 24px 0 24px",
         gap: "16px",
     },
     row: {
         width: "100%",
         display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-around",
-    },
-    buttons: {
-        width: "97%",
-        textAlign: "right",
+        justifyContent: "space-between",
+        maxWidth: "100%",
     },
 };
 
 const onChange = (key) => {
     console.log(key);
 };
+
+const situItens = [
+    {
+        key: "1",
+        label: "Todos",
+        value: "1",
+    },
+    {
+        key: "2",
+        label: <Tag color="magenta">Inserido</Tag>,
+        value: "2",
+    },
+    {
+        key: "3",
+        label: "Pré-validado",
+        value: "3",
+    },
+    {
+        key: "4",
+        label: "Validado",
+        value: "4",
+    },
+    {
+        key: "5",
+        label: "Inscrito",
+        value: "5",
+    },
+    {
+        key: "6",
+        label: "Protestado",
+        value: "6",
+    },
+    {
+        key: "7",
+        label: "Pré-Ajuizado",
+        value: "7",
+    },
+    {
+        key: "8",
+        label: "Ajuizado",
+        value: "8",
+    },
+];
 
 const opcoesTipoProcesso = [
     "Auto de Constatação",
@@ -69,38 +108,35 @@ const SearchPage = () => {
         setData(filteredData);
     };
 
+    const onChange = (key) => {
+        console.log(key);
+    };
     // Definição das colunas da tabela
     const columns = [
         //colunas da tabela
         {
             title: "ID",
             dataIndex: "id",
-            align: "right",
         },
         {
             title: "Nº Proc. Órgão",
             dataIndex: "n_proc_orgao",
-            align: "right",
         },
         {
             title: "Nº CDA",
             dataIndex: "n_cda",
-            align: "right",
         },
         {
             title: "Nº antigo CDA",
             dataIndex: "n_antigo_cda",
-            align: "right",
         },
         {
             title: "CPF/CNPJ",
             dataIndex: "cpf_cnpj",
-            align: "right",
         },
         {
             title: "Nome / Razão Social",
             dataIndex: "nome",
-            align: "right",
         },
         {
             title: "Situação",
@@ -118,12 +154,10 @@ const SearchPage = () => {
                     </span>
                 );
             },
-            align: "right",
         },
         {
             title: "Tipo Processo",
             dataIndex: "tipo_processo",
-            align: "right",
         },
     ];
 
@@ -132,18 +166,10 @@ const SearchPage = () => {
         <>
             <Form form={form} onFinish={onSearch} layout="inline" style={estilo.form}>
                 <div style={estilo.row}>
-                    <Form.Item name="nameOrCpf" style={{ width: "40%" }}>
+                    <Form.Item name="nameOrCpf" style={{ width: "50%" }}>
                         <Input placeholder="Nome ou CPF" />
                     </Form.Item>
-                    <Form.Item name="procNumber" style={{ width: "24%" }}>
-                        <Input placeholder="N.º Proc. Órgão" />
-                    </Form.Item>
-                    <Form.Item name="cdaNumber" style={{ width: "24%" }}>
-                        <Input placeholder="N.º CDA" />
-                    </Form.Item>
-                </div>
-                <div style={estilo.row}>
-                    <Form.Item name="processType" style={{ width: "40%" }}>
+                    <Form.Item name="processType" style={{ width: "49%" }}>
                         <Select
                             showSearch
                             mode="multiple"
@@ -161,15 +187,22 @@ const SearchPage = () => {
                             }))}
                         />
                     </Form.Item>
-                    <Form.Item name="processSituation" style={{ width: "24%" }}>
-                        <Select placeholder="Situação Processo">{/* Opções do select */}</Select>
+                </div>
+                <div style={estilo.row}>
+                    <Form.Item name="processSituation" style={{ width: "30%" }}>
+                        <Select showSearch mode="multiple" placeholder="Situação do processo" options={situItens} />
                     </Form.Item>
-                    <Form.Item name="organ" style={{ width: "24%" }}>
+                    <Form.Item name="procNumber" style={{ width: "15%" }}>
+                        <Input placeholder="N.º Proc. Órgão" />
+                    </Form.Item>
+                    <Form.Item name="cdaNumber" style={{ width: "15%" }}>
+                        <Input placeholder="N.º CDA" />
+                    </Form.Item>
+
+                    <Form.Item name="organ" style={{ width: "20%" }}>
                         <Select placeholder="Órgão">{/* Opções do select */}</Select>
                     </Form.Item>
-                </div>
-                <div style={estilo.buttons}>
-                    <Space size="small" tyle={estilo.buttons}>
+                    <Space style={{ width: "20%", display: "flex", justifyContent: "flex-end" }}>
                         <Form.Item>
                             <Button type="primary" htmlType="submit">
                                 Pesquisar
@@ -184,13 +217,13 @@ const SearchPage = () => {
                         </Button>
                     </Space>
                 </div>
-                <Form.Item noStyle shouldUpdate>
+                {/* <Form.Item noStyle shouldUpdate>
                     {() => (
                         <Typography>
                             <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
                         </Typography>
                     )}
-                </Form.Item>
+                </Form.Item> */}
             </Form>
             <Table dataSource={data} columns={columns} />
         </>
