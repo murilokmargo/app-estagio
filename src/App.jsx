@@ -22,15 +22,13 @@ function App() {
                     path: "/",
                     element: <div>Home</div>,
                 },
-            ],
-        },
-        {
-            path: "/processos",
-            element: <Layout />,
-            children: [
                 {
-                    path: "/processos",
+                    path: "processos",
                     element: <Processos />,
+                },
+                {
+                    path: "processos/:id",
+                    element: <div>Processo</div>,
                 },
             ],
         },

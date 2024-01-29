@@ -44,7 +44,7 @@ const SiderLayout = () => {
         <Sider theme="dark" width={"12%"}>
             <div>
                 <Link to="/">
-                    <Title level={1} style={estilo.title} onClick={onClick}>
+                    <Title level={1} strong style={estilo.title} onClick={onClick}>
                         SADA
                     </Title>
                 </Link>
