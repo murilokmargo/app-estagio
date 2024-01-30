@@ -199,6 +199,49 @@ const opcoesTipoProcesso = [
     },
 ];
 
+// Definição das colunas da tabela
+const columns = [
+    //colunas da tabela
+    {
+        title: "ID",
+        dataIndex: "id",
+    },
+    {
+        title: "Nº Proc. Órgão",
+        dataIndex: "n_proc_orgao",
+    },
+    {
+        title: "Nº CDA",
+        dataIndex: "n_cda",
+    },
+    {
+        title: "Nº antigo CDA",
+        dataIndex: "n_antigo_cda",
+    },
+    {
+        title: "CPF/CNPJ",
+        dataIndex: "cpf",
+    },
+    {
+        title: "Nome / Razão Social",
+        dataIndex: "nome",
+    },
+    {
+        title: "Situação",
+        dataIndex: "situacao",
+        render: (situacao) => {
+            return mapeamentoSituacao[situacao] || situacao;
+        },
+    },
+    {
+        title: "Tipo Processo",
+        dataIndex: "tipo",
+        render: (tipo) => {
+            return mapeamentoTipoProcesso[tipo] || tipo;
+        },
+    },
+];
+
 const mapeamentoTipoProcesso = opcoesTipoProcesso.reduce((acc, item) => {
     acc[item.value] = item.label;
     return acc;
@@ -212,90 +255,64 @@ const mapeamentoSituacao = situItens.reduce((acc, item) => {
 const SearchPage = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]); // Dados da tabela
-
-    // Carregar dados (substitua por uma chamada de API)
-    useEffect(() => {
-        fetch("http://localhost:3000/processos")
-            .then((response) => response.json())
-            .then((data) => {
-                const dataComChaves = data.map((item) => ({ ...item, key: item.id }));
-                setData(dataComChaves);
-            })
-            .catch((error) => console.error("Erro ao buscar dados:", error));
-    }, []);
-
-    // Função para filtrar dados (pode ser substituída por uma chamada de API)
-    const onSearch = (values) => {
-        let queryParts = Object.keys(values)
-            .map((key) => {
-                if (Array.isArray(values[key]) && values[key].length > 0) {
-                    // Para campos com múltiplas seleções, como 'tipo' ou 'situacao'
-                    return `${key}=${values[key][0]}`;
-                } else if (values[key]) {
-                    // Para campos de texto, como 'nome', 'n_cda', etc.
-                    return `${key}=${values[key]}`;
-                }
-                return "";
-            })
-            .filter((part) => part !== "");
-
-        let queryString = queryParts.join("&");
-
-        fetch(`http://localhost:3000/processos?${queryString}`)
-            .then((response) => response.json())
-            .then((data) => {
-                const dataComChaves = data.map((item) => ({ ...item, key: item.id }));
-                setData(dataComChaves);
-            })
-            .catch((error) => console.error("Erro ao buscar dados:", error));
-    };
+    const [searchParams, setSearchParams] = useState({});
+    const [pagination, setPagination] = useState({
+        current: 1, // Página atual
+        pageSize: 10, // Quantidade de itens por página
+        total: 0, // Total de itens (necessário para o componente de paginação do Ant Design)
+    });
 
     const onChange = (key) => {
         console.log(key);
     };
-    // Definição das colunas da tabela
-    const columns = [
-        //colunas da tabela
-        {
-            title: "ID",
-            dataIndex: "id",
-        },
-        {
-            title: "Nº Proc. Órgão",
-            dataIndex: "n_proc_orgao",
-        },
-        {
-            title: "Nº CDA",
-            dataIndex: "n_cda",
-        },
-        {
-            title: "Nº antigo CDA",
-            dataIndex: "n_antigo_cda",
-        },
-        {
-            title: "CPF/CNPJ",
-            dataIndex: "cpf",
-        },
-        {
-            title: "Nome / Razão Social",
-            dataIndex: "nome",
-        },
-        {
-            title: "Situação",
-            dataIndex: "situacao",
-            render: (situacao) => {
-                return mapeamentoSituacao[situacao] || situacao;
-            },
-        },
-        {
-            title: "Tipo Processo",
-            dataIndex: "tipo",
-            render: (tipo) => {
-                return mapeamentoTipoProcesso[tipo] || tipo;
-            },
-        },
-    ];
+
+    const fetchData = (searchParams = {}, page = 1, pageSize = 10) => {
+        setLoading(true);
+
+        // Construir a query string para a busca
+        let queryParts = Object.keys(searchParams)
+            .filter((key) => searchParams[key] && searchParams[key].toString().trim() !== "")
+            .map((key) => {
+                if (Array.isArray(searchParams[key]) && searchParams[key].length > 0) {
+                    return `${key}=${encodeURIComponent(searchParams[key][0])}`;
+                } else {
+                    return `${key}=${encodeURIComponent(searchParams[key])}`;
+                }
+            });
+
+        let queryString = [`_page=${page}`, `_limit=${pageSize}`, ...queryParts].join("&");
+
+        fetch(`http://localhost:3000/processos?${queryString}`)
+            .then((response) => {
+                const total = response.headers.get("X-Total-Count");
+                setPagination({ ...pagination, total: parseInt(total, 10), current: page, pageSize: pageSize });
+
+                return response.json();
+            })
+            .then((data) => {
+                setData(data.map((item) => ({ ...item, key: item.id })));
+                console.log(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Erro ao buscar dados:", error);
+                setLoading(false);
+            });
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const onSearch = (values) => {
+        fetchData(values, 1, pagination.pageSize);
+    };
+
+    const handleTableChange = (newPagination) => {
+        fetchData(form.getFieldsValue(), newPagination.current, newPagination.pageSize);
+    };
 
     const onRow = (record) => ({
         onClick: () => {
@@ -369,7 +386,14 @@ const SearchPage = () => {
                     )}
                 </Form.Item> */}
             </Form>
-            <Table dataSource={data} columns={columns} onRow={onRow} />
+            <Table
+                dataSource={data}
+                loading={loading}
+                pagination={pagination}
+                columns={columns}
+                onRow={onRow}
+                onChange={handleTableChange}
+            />
         </>
     );
 };

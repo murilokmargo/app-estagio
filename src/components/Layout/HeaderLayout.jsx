@@ -7,16 +7,21 @@ const estilo = {
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",
+        overflow: "visible",
     },
     avatar: {
         backgroundColor: "skyblue",
-    }
-}
+    },
+    menu: {
+        width: "150px",
+        justifyContent: "center",
+    },
+};
 
 const items = [
     {
         key: "1",
-        label: "Admin",
+        label: "Administrador",
     },
 ];
 
@@ -28,7 +33,7 @@ const HeaderLayout = () => {
     return (
         <Header style={estilo.header}>
             <Space>
-                {userIsAdmin && <Menu mode="horizontal" items={items} />}
+                {userIsAdmin && <Menu mode="horizontal" items={items} style={estilo.menu} />}
                 <Tooltip placement="bottomLeft" title={User}>
                     <Avatar size="large" style={estilo.avatar}>
                         {User.slice(0, 2)}

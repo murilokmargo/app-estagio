@@ -3,15 +3,15 @@ import { Footer } from "antd/es/layout/layout";
 const estilo = {
     footer: {
         textAlign: "center",
-        backgroundColor: "#f0f5ff"
-    }
-}
+        backgroundColor: "#f0f5ff",
+    },
+};
 
 const FooterLayout = () => {
     return (
-        < Footer style={estilo.footer}>
-            <p>Governo Federal de Mato Grosso 2024</p>
-        </Footer >
+        <Footer style={estilo.footer}>
+            <p>Governo do Estado de Mato Grosso {new Date().getFullYear()}</p>
+        </Footer>
     );
 };
 
