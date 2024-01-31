@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
-import { Form, Table } from "antd";
+import { ConfigProvider, Form, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import ProcessosSearch from "../../components/ProcessosSearch/ProcessosSearch";
 import mapeamentoDeSituacao from "../../utils/MapeamentoDeSituacao";
 import mapeamentoDeTipos from "../../utils/MapeamentoDeTipos";
 import useGetProcessos from "../../hooks/useGetProcessos";
+
+const rowStyle = {
+    cursor: "pointer",
+};
 
 // Definição das colunas da tabela
 const columns = [
@@ -47,6 +51,9 @@ const columns = [
             return mapeamentoDeTipos[tipo] || tipo;
         },
     },
+    {
+        title: "Orgão",
+    },
 ];
 
 const SearchPage = () => {
@@ -70,19 +77,30 @@ const SearchPage = () => {
         onDoubleClick: () => {
             navigate(`/processos/${record.id}`);
         },
+        style: rowStyle,
     });
 
     return (
         <>
-            <ProcessosSearch onSearch={onSearch} form={form} />
-            <Table
-                dataSource={data}
-                loading={loading}
-                pagination={pagination}
-                columns={columns}
-                onRow={onRow}
-                onChange={handleTableChange}
-            />
+            <ConfigProvider
+                theme={{
+                    components: {
+                        Table: {
+                            rowHoverBg: "#bae7ff",
+                        },
+                    },
+                }}
+            >
+                <ProcessosSearch onSearch={onSearch} form={form} />
+                <Table
+                    dataSource={data}
+                    loading={loading}
+                    pagination={pagination}
+                    columns={columns}
+                    onRow={onRow}
+                    onChange={handleTableChange}
+                />
+            </ConfigProvider>
         </>
     );
 };
