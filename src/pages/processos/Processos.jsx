@@ -5,6 +5,9 @@ import ProcessosSearch from "../../components/ProcessosSearch/ProcessosSearch";
 import mapeamentoDeSituacao from "../../utils/MapeamentoDeSituacao";
 import mapeamentoDeTipos from "../../utils/MapeamentoDeTipos";
 import useGetProcessos from "../../hooks/useGetProcessos";
+import CardContent from "../../components/CardContent";
+import PageTitle from "../../components/PagesTitle";
+import Title from "antd/es/typography/Title";
 
 const rowStyle = {
     cursor: "pointer",
@@ -82,25 +85,34 @@ const SearchPage = () => {
 
     return (
         <>
-            <ConfigProvider
-                theme={{
-                    components: {
-                        Table: {
-                            rowHoverBg: "#bae7ff",
+            <PageTitle>
+                <div style={{ display: "flex", alignItems: "baseline" }}>
+                    <Title level={2} style={{ margin: "0" }}>
+                        Processos
+                    </Title>
+                </div>
+            </PageTitle>
+            <CardContent>
+                <ConfigProvider
+                    theme={{
+                        components: {
+                            Table: {
+                                rowHoverBg: "#bae7ff",
+                            },
                         },
-                    },
-                }}
-            >
-                <ProcessosSearch onSearch={onSearch} form={form} />
-                <Table
-                    dataSource={data}
-                    loading={loading}
-                    pagination={pagination}
-                    columns={columns}
-                    onRow={onRow}
-                    onChange={handleTableChange}
-                />
-            </ConfigProvider>
+                    }}
+                >
+                    <ProcessosSearch onSearch={onSearch} form={form} />
+                    <Table
+                        dataSource={data}
+                        loading={loading}
+                        pagination={pagination}
+                        columns={columns}
+                        onRow={onRow}
+                        onChange={handleTableChange}
+                    />
+                </ConfigProvider>
+            </CardContent>
         </>
     );
 };
