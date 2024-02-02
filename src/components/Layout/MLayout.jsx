@@ -10,7 +10,7 @@ const MLayout = ({ children }) => {
             <SiderLayout />
             <Layout style={{ backgroundColor: "#f0f5ff" }}>
                 <HeaderLayout />
-                <Content>{children}</Content>
+                <Content style={{ width: "90%", margin: "auto" }}>{children}</Content>
                 <FooterLayout />
             </Layout>
         </Layout>

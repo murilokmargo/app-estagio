@@ -6,7 +6,7 @@ import mapeamentoDeSituacao from "../../utils/MapeamentoDeSituacao";
 import mapeamentoDeTipos from "../../utils/MapeamentoDeTipos";
 import useGetProcessos from "../../hooks/useGetProcessos";
 import CardContent from "../../components/CardContent";
-import PageTitle from "../../components/PagesTitle";
+import PageTitle from "../../components/PageHeader";
 import Title from "antd/es/typography/Title";
 
 const rowStyle = {
@@ -59,7 +59,7 @@ const columns = [
     },
 ];
 
-const SearchPage = () => {
+const Processos = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const { loading, data, fetchData, pagination } = useGetProcessos();
@@ -117,4 +117,4 @@ const SearchPage = () => {
     );
 };
 
-export default SearchPage;
+export default Processos;
