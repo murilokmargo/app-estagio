@@ -50,7 +50,7 @@ const useGetProcessos = () => {
                 notification.error({
                     message: "Erro na busca dos dados",
                     description: "Não foi possível recuperar os dados. Por favor, tente novamente mais tarde.",
-                    duration: 7, // Mantém a notificação visível até que o usuário feche
+                    duration: 7,
                 });
                 setLoading(false);
             });

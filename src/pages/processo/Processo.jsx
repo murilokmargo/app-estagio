@@ -1,4 +1,4 @@
-import { Button, Col, Descriptions, Row, Space, Tabs, Timeline, Typography } from "antd";
+import { Button, Col, Descriptions, Row, Space, Spin, Tabs, Timeline, Typography } from "antd";
 import {
     DownloadOutlined,
     EditOutlined,
@@ -20,20 +20,55 @@ const { Text } = Typography;
 const Processo = () => {
     const { id } = useParams();
     const [processo, setProcesso] = useState(null);
+    const [detalheProcesso, setDetalheProcesso] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Substitua a URL pela sua API ou método de busca de dados
-        fetch(`http://localhost:3000/processos/${id}`)
-            .then((response) => response.json())
-            .then((data) => setProcesso(data))
-            .catch((error) => console.error("Erro ao buscar processo:", error));
+        const fetchData = async () => {
+            try {
+                const [processoResponse, detalheProcessoResponse] = await Promise.all([
+                    fetch(`http://localhost:3000/processos/${id}`).then((res) => res.json()),
+                    fetch(`http://localhost:3000/detalheProcessos/${id}`).then((res) => res.json()),
+                ]);
+                setProcesso(processoResponse);
+                setDetalheProcesso(detalheProcessoResponse);
+            } catch (error) {
+                console.error("Erro ao buscar os dados:", error);
+                notification.error({
+                    message: "Erro na busca dos dados",
+                    description: "Não foi possível recuperar os dados. Por favor, tente novamente mais tarde.",
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
     }, [id]);
 
-    if (!processo) {
-        return <p>Carregando detalhes do processo...</p>;
+    const criarItensContribuinte = (contribuinte, index) => {
+        const titulo = `${index === 0 ? "Contribuinte" : "Contribuinte Solidário"}: ${contribuinte.nome}${
+            contribuinte.recJudicial ? " - Em Recisão Judicial" : ""
+        }`;
+        const itens = Object.entries(contribuinte)
+            .map(([key, value]) => {
+                if (key === "recJudicial" || value === null) return null; // Ignora 'recJudicial' e valores nulos
+                return {
+                    label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " "),
+                    children: value.toString(),
+                };
+            })
+            .filter(Boolean); // Remove itens nulos
+        return { titulo, itens };
+    };
+
+    if (loading) {
+        return <Spin style={{ display: "flex", justifyContent: "center", marginTop: "20px" }} />;
     }
 
-    // Função para criar itens dinamicamente
+    if (!detalheProcesso || !processo) {
+        return <p>Não foi possível carregar os detalhes do processo.</p>;
+    }
+
     const criarItensDescricao = (processo) => {
         return Object.entries(processo).map(([key, value], index) => {
             console.log(key);
@@ -95,12 +130,26 @@ const Processo = () => {
                         </CardContent>
                         <br />
 
-                        <CardContent>
-                            <Descriptions title="Contribuinte"></Descriptions>
-                        </CardContent>
+                        {detalheProcesso.contribuinte.map((contribuinte, index) => {
+                            const { titulo, itens } = criarItensContribuinte(contribuinte, index);
+                            return (
+                                <>
+                                    <CardContent key={index} style={{ marginBottom: "16px" }}>
+                                        <Descriptions title={titulo}>
+                                            {itens.map((item, itemIndex) => (
+                                                <Descriptions.Item key={itemIndex} label={item.label}>
+                                                    {item.children}
+                                                </Descriptions.Item>
+                                            ))}
+                                        </Descriptions>
+                                    </CardContent>
+                                    <br />
+                                </>
+                            );
+                        })}
                     </Col>
-                    <Col span={6} style={{ display: "flex" }}>
-                        <CardContent style={{ height: "auto" }}>
+                    <Col span={6}>
+                        <CardContent>
                             <Descriptions title="Transições" />
                             <Timeline
                                 mode="alternate"
@@ -141,6 +190,9 @@ const Processo = () => {
             </div>
             <Typography>
                 <pre>{JSON.stringify(processo)}</pre>
+            </Typography>
+            <Typography>
+                <pre>{JSON.stringify(detalheProcesso)}</pre>
             </Typography>
         </>
     );
