@@ -3,7 +3,7 @@ import { Footer } from "antd/es/layout/layout";
 const estilo = {
     footer: {
         textAlign: "center",
-        backgroundColor: "#f0f5ff",
+        backgroundColor: "#d6e4ff",
     },
 };
 

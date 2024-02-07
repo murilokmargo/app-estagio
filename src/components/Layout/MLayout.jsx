@@ -8,7 +8,7 @@ const MLayout = ({ children }) => {
     return (
         <Layout style={{ minHeight: "100vh" }}>
             <SiderLayout />
-            <Layout style={{ backgroundColor: "#f0f5ff" }}>
+            <Layout style={{ backgroundColor: "#d6e4ff" }}>
                 <HeaderLayout />
                 <Content style={{ width: "90%", margin: "auto" }}>{children}</Content>
                 <FooterLayout />
