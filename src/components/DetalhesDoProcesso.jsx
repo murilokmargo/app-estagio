@@ -19,17 +19,10 @@ const criarItensDescricao = ({ detalheProcesso, processo }) => {
 
     const dadosDetalheProcesso = [
         { key: "codigoExterno", label: "Código Externo", value: detalheProcesso.codigoExterno },
-        { key: "nmrProcessoAdm", label: "Nº do processo", value: detalheProcesso.nmrProcessoAdm },
-        { key: "dataCadastro", label: "Data do cadastro", value: detalheProcesso.dataCadastro },
         {
             key: "dataConstituicaoJuros",
             label: "Data de constituição de juros",
             value: detalheProcesso.dataConstituicaoJuros,
-        },
-        {
-            key: "dataConstuitcaoProcesso",
-            label: "Data de constuitcao do processo",
-            value: detalheProcesso.dataConstuitcaoProcesso,
         },
         { key: "dataNegativacao", label: "Data de negativação", value: detalheProcesso.dataNegativacao },
         { key: "nmrLivro", label: "Nº do livro", value: detalheProcesso.nmrLivro },
@@ -49,12 +42,13 @@ const criarItensDescricao = ({ detalheProcesso, processo }) => {
             label: "Situação de negativação",
             value: detalheProcesso.situacaoNegativacao,
         },
-        { key: "tipoCalculo", label: "Tipo de cálculo", value: detalheProcesso.tipoCalculo },
+        { key: "tipoJuro", label: "Tipo de Juro", value: detalheProcesso.tipoJuro },
+        { key: "tipoCorrecao", label: "Tipo de Correção", value: detalheProcesso.tipoCorrecao },
     ];
 
     const dadosCombinados = [...dadosProcesso, ...dadosDetalheProcesso];
 
-    // Filtrar campos nulos ou indefinidos 
+    // Filtrar campos nulos ou indefinidos
     const items = dadosCombinados.reduce((acc, { key, label, value }) => {
         if (value !== null && value !== undefined) {
             acc.push({
@@ -72,11 +66,12 @@ const criarItensDescricao = ({ detalheProcesso, processo }) => {
 export function DetalhesDoProcesso({ detalheProcesso, processo }) {
     const itemsDescricao = criarItensDescricao({ detalheProcesso, processo });
 
-    return <CardContent style={{ marginBottom: "8px" }}>
-        <Descriptions column={2} title="Detalhes do Processo" items={itemsDescricao} />
-        <Descriptions column={1} layout="vertical" size="small">
-            <Descriptions.Item label="Descrição">{detalheProcesso.descricao}</Descriptions.Item>
-        </Descriptions>
-    </CardContent>;
+    return (
+        <CardContent style={{ marginBottom: "8px" }}>
+            <Descriptions column={2} title="Detalhes do Processo" items={itemsDescricao} />
+            <Descriptions column={1} layout="vertical" size="small">
+                <Descriptions.Item label="Descrição">{detalheProcesso.descricao}</Descriptions.Item>
+            </Descriptions>
+        </CardContent>
+    );
 }
-

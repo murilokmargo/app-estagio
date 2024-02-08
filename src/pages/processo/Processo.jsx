@@ -10,6 +10,7 @@ import {
     Typography,
     notification,
     Result,
+    Popover,
 } from "antd";
 import {
     DownloadOutlined,
@@ -18,6 +19,10 @@ import {
     FileAddOutlined,
     FileDoneOutlined,
     HighlightOutlined,
+    InfoCircleOutlined,
+    FileExcelOutlined,
+    FileSyncOutlined,
+    AuditOutlined,
 } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
 import React, { useEffect, useState } from "react";
@@ -89,6 +94,54 @@ const Processo = () => {
         );
     }
 
+    const getPropsForTransition = (estadoFinal) => {
+        switch (estadoFinal) {
+            case "Inscrito":
+                return { icon: <HighlightOutlined />, color: "blue" };
+            case "Cancelado":
+                return { icon: <FileExcelOutlined />, color: "red" };
+            case "Suspenso":
+                return { icon: <FileSyncOutlined />, color: "gray" };
+            case " Pagamento":
+                return { icon: <FileDoneOutlined />, color: "green" };
+            default:
+                return <FileAddOutlined />; // Um ícone padrão para outros casos
+        }
+    };
+
+    const timelineItems = [
+        {
+            dot: <AuditOutlined />,
+            color: "blue",
+            children: `Processo constituido em ${detalheProcesso.dataConstuitcaoProcesso}`,
+        },
+        {
+            dot: <FileAddOutlined />,
+            color: "green",
+            children: `Processo cadastrado em ${detalheProcesso.dataCadastro}`,
+        },
+
+        ...detalheProcesso.transicoes.map((transicao) => {
+            const { icon, color } = getPropsForTransition(transicao.estadoFinal);
+            return {
+                dot: icon,
+                color: color,
+                children: (
+                    <Popover
+                        content={<p style={{ maxWidth: 360 }}>{transicao.descricao}</p>}
+                        title="Descrição"
+                        trigger="click"
+                    >
+                        <span style={{ cursor: "pointer" }}>
+                            Processo {transicao.estadoFinal} em {transicao.data} por {transicao.usuario}
+                            <InfoCircleOutlined style={{ marginLeft: 5, color: "blue" }} />
+                        </span>
+                    </Popover>
+                ),
+            };
+        }),
+    ];
+
     return (
         <>
             <PageHeader>
@@ -128,43 +181,18 @@ const Processo = () => {
                 <Col span={6}>
                     <CardContent>
                         <Descriptions title="Transições" />
-                        <Timeline
-                            mode="alternate"
-                            items={[
-                                {
-                                    dot: <FileDoneOutlined />,
-                                    color: "green",
-                                    children: "Processo Baixado em 12/02/2024",
-                                },
-                                {
-                                    dot: <HighlightOutlined />,
-                                    children: "Processo inscrito em 22/06/2023",
-                                },
-                                {
-                                    color: "gray",
-                                    children: "Solve initial network problems 2015-09-01",
-                                },
-                                {
-                                    color: "gray",
-                                    children: "Technical testing 2015-09-01",
-                                },
-                                {
-                                    dot: <FileAddOutlined />,
-                                    color: "green",
-                                    children: "Processo inserido em 14/02/2023",
-                                },
-                            ]}
-                        />
+                        <Timeline mode="alternate" items={timelineItems} />
                     </CardContent>
                 </Col>
             </Row>
             <Infracoes detalheProcesso={detalheProcesso} />
-            <DecisoesAdministrativasProcesso isModalOpen={isModalOpen} handleModalCancel={handleModalCancel} detalheProcesso={detalheProcesso} />
-
+            <DecisoesAdministrativasProcesso
+                isModalOpen={isModalOpen}
+                handleModalCancel={handleModalCancel}
+                detalheProcesso={detalheProcesso}
+            />
         </>
     );
 };
 
 export default Processo;
-
-

@@ -8,6 +8,7 @@ const prepararItensTabs = (infracoes) => {
             { key: "descricao", label: "Descrição", children: infracao.descricao },
             { key: "tipoMulta", label: "Tipo de Multa", children: infracao.tipoMulta },
             { key: "codigoExterno", label: "Código externo", children: infracao.codigoExterno },
+            { key: "valorTotal", label: "Valor total da infração", children: infracao.valorTotal },
         ];
 
         const fatosGeradoresComponentes = infracao.fatoGerador.map((fato, indexFato) => {
@@ -53,6 +54,11 @@ const prepararItensTabs = (infracoes) => {
                     label: "Valor da penalidade",
                     children: fato.valorPenalidade,
                 },
+                {
+                    key: `valorTotal-${indexFato}`,
+                    label: "Valor total do fato",
+                    children: fato.valorTotal,
+                },
             ];
 
             return (
@@ -82,6 +88,6 @@ const Infracoes = ({ detalheProcesso }) => {
         <CardContent>
             <Tabs items={itemsInfracoes} type="card" />
         </CardContent>
-    )
-}
+    );
+};
 export default Infracoes;
