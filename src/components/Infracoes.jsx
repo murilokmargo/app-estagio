@@ -1,39 +1,39 @@
-import { Card, Descriptions, Tabs } from "antd";
+import { Card, Col, Descriptions, Tabs } from "antd";
 import CardContent from "./CardContent";
 
-const prepararItensTabs = (infracoes) => {
+// Supondo que você passe os detalhes das infrações e dos fato geradores separadamente
+const prepararItensTabs = (infracoes, fatosGeradores) => {
     return infracoes.map((infracao, indexInfracao) => {
+        // Encontra os fato geradores relacionados a esta infração específica
+        const fatoGeradorRelacionado = fatosGeradores.find((fg) => fg.id === infracao.id)?.fatoGerador || [];
+
         let infraçãoItens = [
             { key: "titulo", label: "Título", children: infracao.titulo },
             { key: "descricao", label: "Descrição", children: infracao.descricao },
             { key: "tipoMulta", label: "Tipo de Multa", children: infracao.tipoMulta },
             { key: "codigoExterno", label: "Código externo", children: infracao.codigoExterno },
-            { key: "valorTotal", label: "Valor total da infração", children: infracao.valorTotal },
+            {
+                key: "valorTotal",
+                label: "Valor total da infração",
+                children: `${infracao.valorTotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`,
+            },
         ];
 
-        const fatosGeradoresComponentes = infracao.fatoGerador.map((fato, indexFato) => {
+        const fatosGeradoresComponentes = fatoGeradorRelacionado.map((fato, indexFato) => {
             const fatoGeradorItens = [
-                { key: `dataFato-${indexFato}`, label: "Data Fato", children: fato.dataFato },
-                { key: `dataVencimento-${indexFato}`, label: "Data Vencimento", children: fato.dataVencimento },
-                { key: `situacaoFato-${indexFato}`, label: "Situação Fato", children: fato.situacaoFato },
-                { key: `valorFato-${indexFato}`, label: "Valor Fato", children: fato.valorFato },
+                { key: `situacaoFato-${indexFato}`, label: "Situação do Fato", children: fato.situacaoFato },
+                {
+                    key: `codTributoExterno-${indexFato}`,
+                    label: "Código de tributo externo",
+                    children: fato.codTributoExterno,
+                },
                 {
                     key: `unidadeReferencia-${indexFato}`,
                     label: "Unidade de referência do valor",
                     children: fato.unidadeReferenciaValor,
                 },
+
                 { key: `tipoValor-${indexFato}`, label: "Tipo do valor", children: fato.tipoValor },
-                {
-                    key: `valorQuitadoFato-${indexFato}`,
-                    label: "Valor quitado do fato",
-                    children: fato.valorQuitadoFato,
-                },
-                {
-                    key: `dataConstituicaoCredito-${indexFato}`,
-                    label: "Data da constituição do credito",
-                    children: fato.dataConstituicaoCredito,
-                },
-                { key: `dataAceite-${indexFato}`, label: "Data aceite", children: fato.dataAceite },
                 {
                     key: `instrumentoConstitutivo-${indexFato}`,
                     label: "Intrumento Constitutivo",
@@ -44,10 +44,25 @@ const prepararItensTabs = (infracoes) => {
                     label: "Número do instrumento Constitutivo",
                     children: fato.nmrIntrumentoConstitutivo,
                 },
+                { key: `dataFato-${indexFato}`, label: "Data do Fato", children: fato.dataFato },
+                { key: `dataVencimento-${indexFato}`, label: "Data de Vencimento", children: fato.dataVencimento },
                 {
-                    key: `codTributoExterno-${indexFato}`,
-                    label: "Código de tributo externo",
-                    children: fato.codTributoExterno,
+                    key: `dataConstituicaoCredito-${indexFato}`,
+                    label: "Data da constituição do credito",
+                    children: fato.dataConstituicaoCredito,
+                },
+                { key: `dataAceite-${indexFato}`, label: "Data aceite", children: fato.dataAceite },
+            ];
+            const fatoGeradorValores = [
+                {
+                    key: `valorFato-${indexFato}`,
+                    label: "Valor Fato",
+                    children: fato.valorFato,
+                },
+                {
+                    key: `valorQuitadoFato-${indexFato}`,
+                    label: "Valor quitado do fato",
+                    children: fato.valorQuitadoFato,
                 },
                 {
                     key: `valorPenalidade-${indexFato}`,
@@ -63,17 +78,29 @@ const prepararItensTabs = (infracoes) => {
 
             return (
                 <Card title={`Fato Gerador ${indexFato + 1}`} style={{ marginTop: "16px" }} type="inner">
-                    <Descriptions key={`fato-${indexFato}`} size="small" items={fatoGeradorItens} />
+                    <div style={{ display: "flex" }}>
+                        <Col span={16}>
+                            <Descriptions key={`fato-${indexFato}`} size="large" items={fatoGeradorItens} column={2} />
+                        </Col>
+                        <Col span={8} style={{ alignItems: "flex-end" }}>
+                            <Descriptions
+                                key={`fato-${indexFato}`}
+                                size="small"
+                                items={fatoGeradorValores}
+                                column={1}
+                            />
+                        </Col>
+                    </div>
                 </Card>
             );
         });
 
         return {
             label: `Infração ${indexInfracao + 1}`,
-            key: `${infracao.id}`,
+            key: infracao.id,
             children: (
                 <>
-                    <Descriptions title={" Detalhes da infração"} column={1} items={infraçãoItens} />
+                    <Descriptions title={"Detalhes da infração"} column={1} items={infraçãoItens} />
                     {fatosGeradoresComponentes}
                 </>
             ),
@@ -81,8 +108,8 @@ const prepararItensTabs = (infracoes) => {
     });
 };
 
-const Infracoes = ({ detalheProcesso }) => {
-    const itemsInfracoes = detalheProcesso ? prepararItensTabs(detalheProcesso.infracoes) : [];
+const Infracoes = ({ infracoes, detalheProcesso }) => {
+    const itemsInfracoes = infracoes && detalheProcesso ? prepararItensTabs(infracoes, detalheProcesso) : [];
 
     return (
         <CardContent>
@@ -90,4 +117,5 @@ const Infracoes = ({ detalheProcesso }) => {
         </CardContent>
     );
 };
+
 export default Infracoes;
