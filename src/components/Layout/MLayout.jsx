@@ -3,6 +3,7 @@ import SiderLayout from "./SiderLayout";
 import HeaderLayout from "./HeaderLayout";
 import { Content } from "antd/es/layout/layout";
 import FooterLayout from "./FooterLayout";
+import { FileAddOutlined } from "@ant-design/icons";
 
 const MLayout = ({ children }) => {
     return (

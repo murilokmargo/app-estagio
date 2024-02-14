@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 import MLayout from "./components/Layout/MLayout";
 import Processos from "./pages/processos/Processos";
 import Processo from "./pages/processo/Processo";
+import CriarProcesso from "./pages/criarProcesso/CriarProcesso";
 
 function App() {
     const Layout = () => {
@@ -30,6 +31,10 @@ function App() {
                 {
                     path: "processos/:id",
                     element: <Processo />,
+                },
+                {
+                    path: "processos/criar",
+                    element: <CriarProcesso />,
                 },
             ],
         },

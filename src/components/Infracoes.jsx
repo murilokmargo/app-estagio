@@ -3,9 +3,17 @@ import CardContent from "./CardContent";
 
 // Supondo que você passe os detalhes das infrações e dos fato geradores separadamente
 const prepararItensTabs = (infracoes, fatosGeradores) => {
+    console.log("fatos:");
+    console.log(fatosGeradores);
+    console.log("Infracoes");
+    console.log(infracoes);
     return infracoes.map((infracao, indexInfracao) => {
         // Encontra os fato geradores relacionados a esta infração específica
-        const fatoGeradorRelacionado = fatosGeradores.find((fg) => fg.id === infracao.id)?.fatoGerador || [];
+        console.log("Infração");
+        console.log(infracao);
+        const fatoGeradorRelacionado = fatosGeradores.find((fg) => fg.id.toString() === infracao.id)?.fatoGerador || [];
+        console.log("Fato gerador:");
+        console.log(fatoGeradorRelacionado);
 
         let infraçãoItens = [
             { key: "titulo", label: "Título", children: infracao.titulo },

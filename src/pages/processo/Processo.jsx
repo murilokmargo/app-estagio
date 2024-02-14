@@ -1,16 +1,13 @@
-import { Badge, Button, Col, Row, Space, Spin, Typography, notification, Result, Popover } from "antd";
+import { Badge, Button, Col, Row, Space, Spin, Typography, notification, Result } from "antd";
 import {
     DownloadOutlined,
     EditOutlined,
     FileExclamationOutlined,
-    FileAddOutlined,
-    InfoCircleOutlined,
-    AuditOutlined,
+    LeftOutlined
 } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import CardContent from "../../components/CardContent";
 import PageHeader from "../../components/PageHeader";
 import { useNavigate } from "react-router-dom";
 import { DetalhesDoProcesso } from "../../components/DetalhesDoProcesso";
@@ -117,10 +114,15 @@ const Processo = () => {
         );
     }
 
+    function handleVoltaIcone() {
+        navigate('/processos');
+    }
+
     return (
         <>
             <PageHeader>
                 <Space style={{ alignItems: "baseline" }}>
+                    <LeftOutlined style={{ fontSize: "24px", fontWeight: "bolder", color: "#1890ff" }} onClick={handleVoltaIcone} />
                     <Title
                         level={2}
                         copyable={{

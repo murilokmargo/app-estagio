@@ -1,13 +1,18 @@
 import React, { useEffect } from "react";
-import { ConfigProvider, Form, Table } from "antd";
+import { Button, ConfigProvider, Form, Space, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import ProcessosSearch from "../../components/ProcessosSearch/ProcessosSearch";
 import mapeamentoDeSituacao from "../../utils/MapeamentoDeSituacao";
 import mapeamentoDeTipos from "../../utils/MapeamentoDeTipos";
 import useGetProcessos from "../../hooks/useGetProcessos";
 import CardContent from "../../components/CardContent";
-import PageTitle from "../../components/PageHeader";
 import Title from "antd/es/typography/Title";
+import PageHeader from "../../components/PageHeader";
+import {
+    DownloadOutlined,
+    FileAddOutlined
+} from "@ant-design/icons";
+
 
 const rowStyle = {
     cursor: "pointer",
@@ -76,6 +81,10 @@ const Processos = () => {
         fetchData(form.getFieldsValue(), newPagination.current, newPagination.pageSize);
     };
 
+    const handleNovoProcesso = () => {
+        navigate("/processos/criar")
+    }
+
     const onRow = (record) => ({
         onDoubleClick: () => {
             navigate(`/processos/${record.id}`);
@@ -85,13 +94,21 @@ const Processos = () => {
 
     return (
         <>
-            <PageTitle>
-                <div style={{ display: "flex", alignItems: "baseline" }}>
+            <PageHeader>
+                <Space style={{ alignItems: "baseline" }}>
                     <Title level={2} style={{ margin: "0" }}>
                         Processos
                     </Title>
-                </div>
-            </PageTitle>
+                </Space>
+                <Space>
+                    <Button type="primary" icon={<FileAddOutlined />} onClick={handleNovoProcesso}>
+                        Novo processo
+                    </Button>
+                    <Button icon={<DownloadOutlined />}>
+                        Baixar CDA em lote
+                    </Button>
+                </Space>
+            </PageHeader>
             <CardContent>
                 <ConfigProvider
                     theme={{
