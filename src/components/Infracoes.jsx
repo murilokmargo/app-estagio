@@ -11,7 +11,7 @@ const prepararItensTabs = (infracoes, fatosGeradores) => {
         // Encontra os fato geradores relacionados a esta infração específica
         console.log("Infração");
         console.log(infracao);
-        const fatoGeradorRelacionado = fatosGeradores.find((fg) => fg.id.toString() === infracao.id)?.fatoGerador || [];
+        const fatoGeradorRelacionado = fatosGeradores.find((fg) => fg.id === infracao.id)?.fatoGerador || [];
         console.log("Fato gerador:");
         console.log(fatoGeradorRelacionado);
 

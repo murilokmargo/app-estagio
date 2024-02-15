@@ -8,11 +8,7 @@ import useGetProcessos from "../../hooks/useGetProcessos";
 import CardContent from "../../components/CardContent";
 import Title from "antd/es/typography/Title";
 import PageHeader from "../../components/PageHeader";
-import {
-    DownloadOutlined,
-    FileAddOutlined
-} from "@ant-design/icons";
-
+import { DownloadOutlined, FileAddOutlined } from "@ant-design/icons";
 
 const rowStyle = {
     cursor: "pointer",
@@ -59,9 +55,6 @@ const columns = [
             return mapeamentoDeTipos[tipo] || tipo;
         },
     },
-    {
-        title: "Orgão",
-    },
 ];
 
 const Processos = () => {
@@ -82,8 +75,8 @@ const Processos = () => {
     };
 
     const handleNovoProcesso = () => {
-        navigate("/processos/criar")
-    }
+        navigate("/processos/criar");
+    };
 
     const onRow = (record) => ({
         onDoubleClick: () => {
@@ -104,9 +97,7 @@ const Processos = () => {
                     <Button type="primary" icon={<FileAddOutlined />} onClick={handleNovoProcesso}>
                         Novo processo
                     </Button>
-                    <Button icon={<DownloadOutlined />}>
-                        Baixar CDA em lote
-                    </Button>
+                    <Button icon={<DownloadOutlined />}>Baixar CDA em lote</Button>
                 </Space>
             </PageHeader>
             <CardContent>
