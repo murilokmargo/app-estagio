@@ -131,6 +131,13 @@ const CriarProcesso = () => {
         form.setFieldsValue({ infracoes: infracoesAtualizados });
     };
 
+    // Reseta os campos adicionais quando troca o tipo
+    const tipoProcesso = Form.useWatch("tipo", form)
+    useEffect(() => {
+        form.resetFields(["numeroAvisoCobranca", "chassi", "placa", "renavan", "numeroAutoConstatacao", "numeroAutoInfracao", "numeroAvisoCobranca", "numeroFundeic", "numeroInadimplementoContratual", "acordoParcelamento", "parcelaAcordada", "parcelaPaga", "termoRemessa", "numeroProdei", "numeroSentenca", "numeroReclamacao", "numeroTac", "numeroTcc", "numeroAcordo", "numeroSentenca", "numeroAiim", "numeroTrfc"])
+    }, [tipoProcesso])
+
+
     return (
         <div>
             <PageHeader>
@@ -164,6 +171,177 @@ const CriarProcesso = () => {
                     <Form.Item name="tipo" label="Tipo de processo">
                         <Select showSearch placeholder="Tipo de processo" options={opcoesTipoProcesso} />
                     </Form.Item>
+
+                    {/* "1": "Auto de Constatação",
+                    "2": "Auto de Infração",
+                    "3": "Aviso de Cobrança",
+                    "4": "Aviso de Cobrança II",
+                    "5": "FUNDEIC",
+                    "6": "Inadimplemento Contratual / Ressarcimento ao Erário",
+                    "7": "Parcelamento",
+                    "8": "PRODEI",
+                    "9": "Reclamação",
+                    "10": "Termo de Ajustamento de Conduta (TAC)",
+                    "11": "Termo de Compromisso de Compensação (TCC)",
+                    "12": "Tribunal de Contas",
+                    "13": "MPE/MT - TJ/MT",
+                    "14": "IPVA",
+                    "15": "AIIM / AAIM",
+                    "16": "TRFC",
+                    "17": "Licenciamento Veículo",
+                    "18": "Aviso de Cobrança não tributário"
+                    */}
+                    {tipoProcesso === "1" &&
+                        <>
+                            < Form.Item name="numeroAutoConstatacao" label="Nº do Auto da Constatação">
+                                <Input placeholder="Nº do Auto da Constatação" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "2" &&
+                        <>
+                            < Form.Item name="numeroAutoInfracao" label="Nº do Auto da Infração">
+                                <Input placeholder="Nº do Auto da Infração" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "3" &&
+                        <>
+                            < Form.Item name="numeroAvisoCobranca" label="Nº do Aviso de Cobrança">
+                                <Input placeholder="Nº do Aviso de Cobrança" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "4" &&
+                        <>
+
+                        </>
+                    }
+                    {tipoProcesso === "5" &&
+                        <>
+                            < Form.Item name="numeroFundeic" label="Nº do FUNDEIC">
+                                <Input placeholder="Nº do FUNDEIC" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "6" &&
+                        <>
+                            < Form.Item name="numeroInadimplementoContratual" label="Nº do Inadimplemento Contratual">
+                                <Input placeholder="Nº do Inadimplemento Contratual" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "7" &&
+                        <>
+                            < Form.Item name="acordoParcelamento" label="Nº do acordo de parcelamento">
+                                <Input placeholder="Nº do acordo de parcelamento" />
+                            </Form.Item>
+                            < Form.Item name="parcelaAcordada" label="Nº das parcelas acordada">
+                                <Input placeholder="Nº das parcelas acordada" />
+                            </Form.Item>
+                            < Form.Item name="parcelaPaga" label="Parcelas pagas">
+                                <Input placeholder="Nº das Parcelas pagas" />
+                            </Form.Item>
+                            < Form.Item name="termoRemessa" label="Nº do termo remessa">
+                                <Input placeholder="Nº do termo remessa" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "8" &&
+                        <>
+                            < Form.Item name="numeroProdei" label="Nº Prodei">
+                                <Input placeholder="Nº Prodei" />
+                            </Form.Item>
+                            < Form.Item name="numeroSentenca" label="Nº da Sentença">
+                                <Input placeholder="Nº da Sentença" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "9" &&
+                        <>
+                            < Form.Item name="numeroReclamacao" label="Nº da Reclamação">
+                                <Input placeholder="Nº da Reclamação" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "10" &&
+                        <>
+                            < Form.Item name="numeroTac" label="Nº do TAC">
+                                <Input placeholder="Nº do TAC" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "11" &&
+                        <>
+                            < Form.Item name="numeroTcc" label="Nº do TCC">
+                                <Input placeholder="Nº do TCC" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "12" &&
+                        <>
+                            < Form.Item name="numeroAcordo" label="Nº do acordo">
+                                <Input placeholder="Nº do acordo" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "13" &&
+                        <>
+                            < Form.Item name="numeroSentenca" label="Nº da sentença">
+                                <Input placeholder="Nº da sentença" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "14" && <>
+                        < Form.Item name="numeroAvisoCobranca" label="Nº do aviso de cobrança">
+                            <Input placeholder="Nº do aviso de cobrança" />
+                        </Form.Item>
+                        < Form.Item name="placa" label="Placa">
+                            <Input placeholder="Placa" />
+                        </Form.Item>
+                        < Form.Item name="renavan" label="Renavan">
+                            <Input placeholder="Renavan" />
+                        </Form.Item>
+                        < Form.Item name="chassi" label="Chassi">
+                            <Input placeholder="Chassi" />
+                        </Form.Item>
+                    </>
+                    }
+                    {tipoProcesso === "15" &&
+                        <>
+                            < Form.Item name="numeroAiim" label="Nº AIIM">
+                                <Input placeholder="Nº AIIM" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "16" &&
+                        <>
+                            < Form.Item name="numeroTrfc" label="Nº TRFC">
+                                <Input placeholder="Nº TRFC" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "17" &&
+                        <>
+                            < Form.Item name="numeroAvisoCobranca" label="Nº do aviso de cobrança">
+                                <Input placeholder="Nº do aviso de cobrança" />
+                            </Form.Item>
+                            < Form.Item name="placa" label="Placa">
+                                <Input placeholder="Placa" />
+                            </Form.Item>
+                            < Form.Item name="renavan" label="Renavan">
+                                <Input placeholder="Renavan" />
+                            </Form.Item>
+                            < Form.Item name="chassi" label="Chassi">
+                                <Input placeholder="Chassi" />
+                            </Form.Item>
+                        </>
+                    }
+                    {tipoProcesso === "18" &&
+                        <>
+
+                        </>
+                    }
                     <Form.Item hidden name="nome" label="Nome do Primeiro Contribuinte">
                         <Input placeholder="Nome do primeiro contribuinte" disabled />
                     </Form.Item>
@@ -510,7 +688,7 @@ const CriarProcesso = () => {
                     </Form.Item>
                 </Form>
             </CardContent>
-        </div>
+        </div >
     );
 };
 

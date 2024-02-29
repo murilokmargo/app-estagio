@@ -8,6 +8,7 @@ const estilo = {
         justifyContent: "flex-end",
         alignItems: "center",
         overflow: "visible",
+        boxShadow: "4px 4px 5px rgba(0, 0, 0, .08)",
     },
     avatar: {
         backgroundColor: "skyblue",
