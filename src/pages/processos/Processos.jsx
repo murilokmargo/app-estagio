@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, ConfigProvider, Form, Space, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import ProcessosSearch from "../../components/ProcessosSearch/ProcessosSearch";
@@ -60,7 +60,17 @@ const columns = [
 const Processos = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const { loading, data, fetchData, pagination } = useGetProcessos();
+
+    const onSelectChange = (newSelectedRowKeys) => {
+        console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+    };
 
     useEffect(() => {
         fetchData();
@@ -85,6 +95,8 @@ const Processos = () => {
         style: rowStyle,
     });
 
+    const hasSelected = selectedRowKeys.length > 0;
+
     return (
         <>
             <PageHeader>
@@ -97,7 +109,9 @@ const Processos = () => {
                     <Button type="primary" icon={<FileAddOutlined />} onClick={handleNovoProcesso}>
                         Novo processo
                     </Button>
-                    <Button icon={<DownloadOutlined />}>Baixar CDA em lote</Button>
+                    <Button disabled={!hasSelected} icon={<DownloadOutlined />}>
+                        Baixar CDA em lote
+                    </Button>
                 </Space>
             </PageHeader>
             <CardContent>
@@ -118,6 +132,7 @@ const Processos = () => {
                         columns={columns}
                         onRow={onRow}
                         onChange={handleTableChange}
+                        rowSelection={rowSelection}
                     />
                 </ConfigProvider>
             </CardContent>
