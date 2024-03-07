@@ -174,7 +174,8 @@ const CriarProcesso = () => {
                     </Title>
                 </Space>
                 <Space>
-                    <Button type="primary">Botão</Button>
+                    <Button type="primary">Criar processo</Button>
+                    <Button danger>Cancelar</Button>
                 </Space>
             </PageHeader>
             <CardContent>
@@ -674,17 +675,20 @@ const CriarProcesso = () => {
                             </>
                         )}
                     </Form.List>
-                    <Form.Item noStyle shouldUpdate>
+                    {/* <Form.Item noStyle shouldUpdate>
                         {() => (
                             <Typography>
                                 <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
                             </Typography>
                         )}
-                    </Form.Item>
-                    <Form.Item style={{ textAlign: "center" }}>
-                        <Button type="primary" htmlType="submit">
-                            Criar Processo
-                        </Button>
+                    </Form.Item> */}
+                    <Form.Item style={{ padding: "32px" }}>
+                        <Space>
+                            <Button type="primary" htmlType="submit">
+                                Criar Processo
+                            </Button>
+                            <Button danger>Cancelar</Button>
+                        </Space>
                     </Form.Item>
                 </Form>
             </CardContent>

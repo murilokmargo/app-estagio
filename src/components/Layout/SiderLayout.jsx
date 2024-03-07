@@ -26,11 +26,12 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-    getItem(<Link to="/processos">Processos</Link>, "1", <FileOutlined />),
-    getItem("Tabelas", "2", <GroupOutlined />),
-    getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
-    getItem("Team", "sub2", <TeamOutlined />, [getItem("Team 1", "6"), getItem("Team 2", "8")]),
-    getItem("Files", "9", <PieChartOutlined />),
+    getItem("Processos", "1", <FileOutlined />, [
+        getItem(<Link to="/processos">CDA's</Link>, "2"),
+        getItem("Decisões administrativas", "3"),
+    ]),
+    getItem("Tabelas", "4", <GroupOutlined />),
+    getItem("Consulta", "5", <PieChartOutlined />),
 ];
 
 const SiderLayout = () => {

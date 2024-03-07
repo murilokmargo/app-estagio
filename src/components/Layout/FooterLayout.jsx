@@ -4,6 +4,7 @@ const estilo = {
     footer: {
         textAlign: "center",
         backgroundColor: "#d6e4ff",
+        marginTop: "16px",
     },
 };
 
